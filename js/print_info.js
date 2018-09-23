@@ -3,7 +3,7 @@ function print_info(id)
 	document.write("<div class=\"left\">\n");
 	if (menu[id].istop)
 	{
-		document.write("<h2><font color=#EE30A7>[TOP]</font>" + menu[id].title + "<br />\n");
+		document.write("<h2><font color=#EE30A7>[TOP]</font><a href=\"articles/" + menu[id].num + ".html\">" + menu[id].title + "</a><br />\n");
 	}
 	else
 	{
