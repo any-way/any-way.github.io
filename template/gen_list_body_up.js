@@ -7,11 +7,11 @@ document.write("\
 			<div class=\"clr\"></div>\
             <div class=\"menu\">\
 				<ul>\
-					<li><a href=\"~\index.html\">Home</a></li>\
-					<li><a href=\"~\article.html\" class=\"active\">Article</a></li>\
-					<li><a href=\"~\label.html\"> Label </a></li>\
-					<li><a href=\"~\tool.html\"> Tool</a></li>\
-					<li><a href=\"~\search.html\"> Search</a></li>\
+					<li><a href=\"\index.html\">Home</a></li>\
+					<li><a href=\"\article.html\" class=\"active\">Article</a></li>\
+					<li><a href=\"\label.html\"> Label </a></li>\
+					<li><a href=\"\tool.html\"> Tool</a></li>\
+					<li><a href=\"\search.html\"> Search</a></li>\
 				</ul>\
 			</div>\
 		</div>\
