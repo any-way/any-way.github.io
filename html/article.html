@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<head>
+	<script type="text/javascript" src="/include.js"></script>
+</head>
+<body>
+
+	<script>
+		component_head(2);
+		component_body_begin();
+		var page = get_para("page");
+		var tag = get_para("tag");
+		if (page == null)
+			page = 1;
+		else
+			page = parseInt(page);
+		var n_article = get_n_article(tag);
+		var n_page = max(Math.floor((n_article - 1) / n_list_per_page) + 1, 1);
+		
+		if (n_article == 0)
+			component_plane_sign("Can't found articles");
+		else if (page < 1 || page > n_page)
+			component_plane_sign("Page number exceed");
+		else
+		{
+			if (tag == null)
+				component_plane_pageNumer(1, page, n_page, "");
+			else
+				component_plane_pageNumer(1, page, n_page, "&tag=" + tag);
+			id = get_article(tag, (page - 1) * n_list_per_page + 1, min(page * n_list_per_page, n_article));
+			component_plane_list("Article list", id);
+			if (tag == null)
+				component_plane_pageNumer(1, page, n_page, "");
+			else
+				component_plane_pageNumer(1, page, n_page, "&tag=" + tag);
+		}
+		component_body_end();	
+	</script>
+		
+</body>
+</html>
