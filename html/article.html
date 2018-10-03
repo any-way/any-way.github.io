@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<script type="text/javascript" src="/include.js"></script>
 </head>
 <body>
@@ -9,6 +10,7 @@
 		component_body_begin();
 		var page = get_para("page");
 		var tag = get_para("tag");
+		if (tag != null) tag = decodeURI(tag);
 		if (page == null)
 			page = 1;
 		else
@@ -25,13 +27,13 @@
 			if (tag == null)
 				component_plane_pageNumer(1, page, n_page, "");
 			else
-				component_plane_pageNumer(1, page, n_page, "&tag=" + tag);
+				component_plane_pageNumer(1, page, n_page, "&tag=" + encodeURI(encodeURI(tag)));
 			id = get_article(tag, (page - 1) * n_list_per_page + 1, min(page * n_list_per_page, n_article));
-			component_plane_list("Article list", id);
+			component_plane_list("文章列表", id);
 			if (tag == null)
 				component_plane_pageNumer(1, page, n_page, "");
 			else
-				component_plane_pageNumer(1, page, n_page, "&tag=" + tag);
+				component_plane_pageNumer(1, page, n_page, "&tag=" + encodeURI(encodeURI(tag)));
 		}
 		component_body_end();	
 	</script>

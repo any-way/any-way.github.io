@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<script type="text/javascript" src="/include.js"></script>
+</head>
+<body>
+	<script>
+		var article_id = 3;
+		component_head(3);
+		component_body_begin();
+		component_plane_text_begin(article_id);
+	</script>
+	近期重温一些C++的书，把里面有些有用的东西拿出来整理一下。 <br /><br />
+	<ul>
+		<li><a href="#ptrclass">类的计数与复制</a></li>
+		<li><a href="#funcobj">函数对象</a></li>
+		<li><a href="#c++1114">C++11/14</a></li>
+	</ul>
+	<font size = 5>《C++沉思录》</font><br/><br/>
+	<b><a name = "ptrclass">类的计数与复制</a></b> <br />
+	首先建一个类：<br />
+	<div class="srccode">
+	<pre>
+class UseCount{
+	public:
+		UseCount();
+		UseCound(UseCount);
+		UseCound& operator=(const UseCount&);
+		~UseCount();
+		
+		bool only();
+		bool reattach(const UseCount&);
+		bool makeonly();
+	private:
+		int *p;
+		UseCount& operator=(const UseCount&);
+};
+
+UseCount:UseCount(): p(new int(0)) {}
+UseCount:UseCount(const UseCount& u): p(u.p) {++*p;}
+UseCount:~UseCount(): {if (--*p == 0) delete p;}
+
+bool UseCount::only() {return *p == 1}
+
+bool UseCount::reattach(const UseCount& u)
+{
+	++*u.p;
+	if (--*p == 0)
+	{
+		delete p;
+		p = u.p;
+		return true;
+	}
+	p = u.p;
+	return false;
+}
+
+bool UseCount::makeonly()
+{
+	if (*p == 1)
+		return false;
+	--*p;
+	p = new int(1);
+	return true;
+}
+	</pre>
+	</div>
+	
+	
+	
+	当要建一个类的时候，可以这么写：<br />
+	<div class="srccode">
+	<pre>
+class A{
+	public:
+		//接口
+	private:
+		//数据
+		UseCount u;
+};
+	</pre>
+	</div>
+	构造：<br />
+	<div class="srccode">
+	<pre>
+A:A()
+{
+	//一般构造
+}
+
+A:A(const A& a): u(a.u)
+{
+	//复制数据
+}
+	</pre>
+	</div>
+	析构函数，判断是否唯一再去删除: <br />
+	<div class="srccode">
+	<pre>
+A:~A()
+{
+	if (u.only())
+	{
+		//删除数据
+	}
+}
+	</pre>
+	</div>
+	赋值函数，需要判断是否自我赋值：<br />
+	<div class="srccode">
+	<pre>
+A& A::operator=(const A& a)
+{
+	if (u.reattach(a.u))
+	{
+		//删除*this的数据
+	}
+	//把数据从a赋值到this
+	return *this;
+}
+	</pre>
+	</div>
+	写时复制：<br />
+	<div class="srccode">
+	<pre>
+void A::change(...)
+{
+	if (u.makeonly())
+	{
+		//把*this的数据复制多一份
+	}
+	//修改*this
+}
+	</pre>
+	</div>
+	<b><a name = "funcobj">函数对象</a></b> <br />	
+	用函数对象来代替函数：<br />
+	<div class="srccode">
+	<pre>
+class F{
+	public:
+		int operator() (int);
+};
+	</pre>
+	</div>
+	然后F可以当函数用,也可以放到模板里用： <br />
+	<div class="srccode">
+	<pre>
+int main()
+{
+	F f;
+	int n = f(42);
+}
+	</pre>
+	</div>
+	 
+	
+	---------------------------------------------------------
+	<br /><br />
+	<font size = 5>《C++11/14高级编程 Boost程序库探秘》</font><br/><br/>
+	
+	<b><a name="c++1114">C++11/14</a></b> <br />
+	自动推导类型auto, decltype: <br />
+	<div class="srccode">
+	<pre>
+auto max(int a, int b){ return a > b ? a : b;}
+auto sum(int a, double b) -> decltype(a+b) {return a + b;}
+	</pre>
+	</div>	
+	
+	新式for循环: <br />
+	<div class="srccode">
+	<pre>
+for(auto x : a)
+	cout << x;
+	</pre>
+	</div>	
+	等价于 <br />
+	<div class="srccode">
+	<pre>
+for(auto i = a.begin(); x != a.end(); ++i)
+	cout << *x;
+	</pre>
+	</div>	
+	
+	面向对象编程的关键字: <br />
+	default: 用缺省实现 <br />
+	delete: 显式禁止 <br />
+	<div class="srccode">
+	<pre>
+class A{
+	public:
+		A() = default;
+		A& operator=(const A&) = delete;
+};
+	</pre>
+	</div>	
+	override: 标明重载 <br />
+	delete: 显式禁止继承或者重载 <br />
+	<div class="srccode">
+	<pre>
+class A{
+	public:
+		virtual void f() = 0;
+		virtual void g() = 0;
+};
+
+class B : public A{
+	public:
+		virtual void f() override{}			//f可以被重载
+		virtual void g() override final {}	//g不能再重载
+};
+
+class C final : public A{		//C不能被继承
+};
+	</pre>
+	</div>	
+	在类定义成员的时候初始化:<br />
+	<div class="srccode">
+	<pre>
+		class A{
+			int x = 0;
+		}
+	</pre>
+	</div>	
+	可变参数模板:<br />
+	------待找例子<br />
+	lambda表达式:<br />
+	<div class="srccode">
+	<pre>
+auto max = [] (int a, int b) {return a > b ? a : b;};
+	</pre>
+	</div>	
+	语言版本: <br />
+	<div class="srccode">
+	<pre>
+#if __cplusplus < 201402L
+	#error "We need C++14 standard"
+#endif
+	</pre>
+	</div>	
+	
+	<script>
+		component_plane_text_end(article_id);
+		component_body_end();
+	</script>
+</body>
+</html>

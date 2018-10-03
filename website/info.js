@@ -1,35 +1,35 @@
 //website
-var website_title = "Space of WY";
+var website_title = "angwuy的个人空间";
 var website_icon = "/favicon.ico";
 
 //head component
 var head_column = new Array(
 {
-	title : "Home",
+	title : "主页",
 	link : "/index.html"
 },
 {
-	title : "Guide",
+	title : "导航",
 	link : "/html/guide.html"
 },
 {
-	title : "Article",
+	title : "文章",
 	link : "/html/article.html"
 },
 {
-	title : "Tag",
+	title : "标签",
 	link : "#"
 },
 {
-	title : "Search",
+	title : "搜索",
 	link : "#"
-},
+}
 );
 
 //guide component
 var guide_column = new Array(
 {
-	title : "My Homepage",
+	title : "我的主页",
 	link : "/index.html"
 },
 {

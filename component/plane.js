@@ -28,7 +28,7 @@ function component_plane_articleInfo(id)
 	document.write("<p>\n");
 	for (var i = 0; i < menu[id].tags.length; ++i)
 	{
-		document.write("<div class=\"label\"><a href=\"/html/article.html?tag=" + menu[id].tags[i] + "\">" + menu[id].tags[i] + "</a></div>\n");
+		document.write("<div class=\"label\"><a href=\"/html/article.html?tag=" + encodeURI(encodeURI(menu[id].tags[i])) + "\">" + menu[id].tags[i] + "</a></div>\n");
 	}
 	document.write("</p>\n");
 	component_plane_end();			
@@ -71,7 +71,7 @@ function component_plane_text_end(id)
 	document.write("			<br /><br />\n");
 	for (var i = 0; i < menu[id].tags.length; ++i)
 	{
-		document.write("<div class=\"label\"><a href=\"/html/article.html?tag=" + menu[id].tags[i] + "\">" + menu[id].tags[i] + "</a></div>\n");
+		document.write("<div class=\"label\"><a href=\"/html/article.html?tag=" + encodeURI(encodeURI(menu[id].tags[i])) + "\">" + menu[id].tags[i] + "</a></div>\n");
 	}
 	document.write("			<br /><br />\n");
 	document.write("		</div>\n");
@@ -115,7 +115,7 @@ function component_plane_guideList()
 		rid[rid.length] = i;
 		if (rid.length > n_list_guide_recent) break;
 	}
-	component_plane_list("Recent", rid);
+	component_plane_list("最新文章", rid);
 }
 
 //plane, printing a message
@@ -129,7 +129,7 @@ function component_plane_sign(message)
 //plane, printing page number
 function component_plane_pageNumer(left, mid, right, addr)
 {
-	document.write("<div class=\"left\">\n");
+	document.write("<div class=\"left_page\">\n");
 	var num = new Array(0);
 	
 	document.write("<a href=\"/html/article.html?page=" + left + addr + "\">[First]<a> ");

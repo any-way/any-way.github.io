@@ -1,5 +1,3 @@
-document.write("<meta charset=\"UTF-8\">");
-
 document.write("<meta name=\"viewport\" content=\"width=device-width,initial-scale=1\">	");
 document.write("<link href=\"/css/blue/style.css\" rel=\"stylesheet\" type=\"text/css\" />");
 
